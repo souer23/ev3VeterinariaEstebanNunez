@@ -1,0 +1,97 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block titulo %}
+    Pagina principal
+{% endblock %}
+
+
+{% block contenido %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Lista de Usuarios Registrados</h2>
+
+    <table id="usuariosTable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if usuarios %}
+            {% for usuario in usuarios %}
+            <tr>
+                <td>{{ usuario.id }}</td>
+                <td>{{ usuario.username }}</td>
+                <td>
+                    {% if not usuario.is_superuser %}
+                        <button type="button" class="text-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{ usuario.id }}">
+                            <img src="{% static 'img/trash.svg' %}" alt="Eliminar" class="icon-trash">
+                        </button>
+                    {% else %}
+                        <span class="text-muted">No eliminable</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <!-- Modal -->
+            {% if not usuario.is_superuser %}
+            <div class="modal fade" id="exampleModal{{ usuario.id }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ usuario.id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel{{ usuario.id }}">Confirmación</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            ¿Estás seguro que quieres eliminar a {{ usuario.username }}?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <a type="button" href="{% url 'eliminarUsuario' usuario.id %}" class="btn btn-danger">Confirmar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% else %} 
+            <tr>
+                <td colspan="d-grid" class="text-center">No hay empleados registrados</td>
+            </tr>
+            {% endif %}
+        </tbody>
+        
+    </table>
+</div>
+
+{% endblock %}
+
+{% block datatable %}
+            <!-- JS de Datatable -->
+            <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+            <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+            <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+            <script src="https://cdn.datatables.net/buttons/3.1.2/js/dataTables.buttons.js"></script>
+            <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.bootstrap5.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+            <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.html5.js"></script>
+            <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.print.js"></script>
+            <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.colVis.js"></script>
+        
+            <script>
+                var table = new DataTable('#usuariosTable', {
+                    language: {
+                        url: 'https://cdn.datatables.net/plug-ins/2.1.8/i18n/es-MX.json',
+                    },
+                    layout: {
+                        topStart: {
+                            buttons: ['copy', 'excel', 'pdf', 'colvis']
+                        }
+                    }
+                });
+            </script>
+{% endblock %}

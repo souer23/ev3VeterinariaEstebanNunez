@@ -1,0 +1,42 @@
+{% extends "base/base.html" %}
+
+{% load static %}
+
+{% block titulo %}
+    INDEX 😎😎😎
+{% endblock %}
+
+{% block contenido %}
+    {% if user.is_authenticated %}
+        <div class="container mt-5">
+            <div class="row">
+                <!-- Sección de información -->
+                <div class="col-md-6">
+                    <h2 class="text-primary">Bienvenidos a Clínica Veterinaria Chucky PB</h2>
+                    <p class="text-muted">
+                        En Chucky PB, nos dedicamos a brindar el mejor cuidado para tus mascotas. Nuestro equipo de profesionales apasionados trabaja día a día para asegurar que tus amigos peludos estén saludables y felices.
+                    </p>
+                    <h4 class="text-secondary mt-4">Servicios que ofrecemos:</h4>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">✔ Consultas médicas generales</li>
+                        <li class="list-group-item">✔ Vacunación</li>
+                        <li class="list-group-item">✔ Cirugías</li>
+                        <li class="list-group-item">✔ Peluquería y estética</li>
+                        <li class="list-group-item">✔ Farmacia veterinaria</li>
+                    </ul>
+                </div>
+        
+                <!-- Sección de imagen -->
+                <div class="col-md-6 text-center">
+                    <img src="{% static 'img/perrito.jpg' %}" alt="Icono mascota" class="img-fluid rounded shadow" >
+                    <p class="mt-3 text-muted">"Cuidamos a tus amigos como si fueran parte de nuestra familia."</p>
+                </div>
+            </div>
+        </div>
+        
+    {% endif %}
+{% endblock %}
+
+{% block datatable %}
+SCRIP DATATABLE 
+{% endblock %}
